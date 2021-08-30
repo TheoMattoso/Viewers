@@ -1,5 +1,6 @@
 import React from 'react';
 import { Component } from 'react';
+import { Select } from '@ohif/ui';
 import { getImageData, loadImageData, View2D } from 'react-vtkjs-viewport';
 import vtkVolume from 'vtk.js/Sources/Rendering/Core/Volume';
 import vtkVolumeMapper from 'vtk.js/Sources/Rendering/Core/VolumeMapper';
@@ -426,78 +427,42 @@ class VTKFusion extends Component {
       return <h4>Loading...</h4>;
     }
 
-    const ctTransferFunctionPresetOptions = null;
-
-    const petColorMapPresetOptions = vtkColorMaps.rgbPresetNames.map(preset => {
-      return (
-        <option key={preset} value={preset}>
-          {preset}
-        </option>
-      );
-    });
+    // const ctTransferFunctionPresetOptions = null;
+    const petTransferFunctionPresetOptions = [];
+    const petColorMapPresetOptions = vtkColorMaps.rgbPresetNames.forEach(
+      preset => {
+        petTransferFunctionPresetOptions.push({ key: preset, value: preset });
+        // return (
+        //   <option key={preset} value={preset}>
+        //     {preset}
+        //   </option>
+        // );
+      }
+    );
 
     const { percentCompleteCT, percentCompletePT } = this.state;
-
     const progressString = `Progress: CT: ${percentCompleteCT}% PET: ${percentCompletePT}%`;
 
     return (
       <div>
-        <div className="row">
-          <div className="col-xs-12">
-            <h1>Image Fusion </h1>
-
-            <p>
-              This example demonstrates how to use both the 2D and 3D components
-              to display multiple volumes simultaneously. A PET volume is
-              overlaid on a CT volume and controls are provided to update the CT
-              Volume Rendering presets (manipulating scalar opacity, gradient
-              opacity, RGB transfer function, etc...) and the PET Colormap (i.e.
-              RGB Transfer Function).
-            </p>
-            <p>
-              Images are retrieved via DICOMWeb from a publicly available server
-              and constructed into <code>vtkImageData</code> volumes before they
-              are provided to the component. When each slice arrives, its pixel
-              data is dumped into the proper location in the volume array.
-            </p>
-          </div>
-          <div className="col-xs-12">
-            <div>
-              <label htmlFor="select_PET_colormap">PET Colormap: </label>
-              <select
-                id="select_PET_colormap"
-                value={this.state.petColorMapId}
-                onChange={this.handleChangePETColorMapId}
-              >
-                {petColorMapPresetOptions}
-              </select>
-            </div>
-            <div>
-              <label htmlFor="select_CT_xfer_fn">
-                CT Transfer Function Preset (for Volume Rendering):{' '}
-              </label>
-              <select
-                id="select_CT_xfer_fn"
-                value={this.state.ctTransferFunctionPresetId}
-                onChange={this.handleChangeCTTransferFunction}
-              >
-                {ctTransferFunctionPresetOptions}
-              </select>
-            </div>
-          </div>
-          <div className="col-xs-12">
-            <h5>{progressString}</h5>
-          </div>
+        <div className="col-xs-12">
+          <Select
+            label={'Select a PET color palette:'}
+            id="select_CT_xfer_fn"
+            options={petTransferFunctionPresetOptions}
+            value={this.state.petColorMapId}
+            onChange={this.handleChangePETColorMapId}
+          />
         </div>
-
-        <div className="row">
-          <hr />
-          <div className="col-xs-12 col-sm-6">
-            <View2D
-              volumes={this.state.volumes}
-              orientation={{ sliceNormal: [1, 0, 0], viewUp: [0, 0, 1] }}
-            />
-          </div>
+        <div className="col-xs-12">
+          <h5>{progressString}</h5>
+        </div>
+        <hr />
+        <div className="col-xs-12 col-sm-6">
+          <View2D
+            volumes={this.state.volumes}
+            orientation={{ sliceNormal: [1, 0, 0], viewUp: [0, 0, 1] }}
+          />
         </div>
       </div>
     );

@@ -6,7 +6,7 @@ import './ViewportPane.css';
 import { Select } from '@ohif/ui';
 import vtkColorMaps from '../../../../../extensions/vtk/src/ColorMaps.js';
 
-const ViewportPane = function(props) {
+const ViewportPane = function (props) {
   const { children, onDrop, viewportIndex, className: propClassName } = props;
   const { displaySet } = children.props.viewportData;
   const [{ hovered, highlighted }, drop] = useDrop({
@@ -29,16 +29,6 @@ const ViewportPane = function(props) {
     }),
   });
 
-  const presetArray = [];
-  vtkColorMaps.rgbPresetNames.map(preset => {
-    presetArray.push({ key: preset, value: preset });
-  });
-
-  const colorPaletteComp = displaySet.fusion
-    ? renderColorPalette(presetArray)
-    : null;
-
-  console.log(displaySet);
   const renderedChildren = displaySet.fusion
     ? renderFusion(displaySet)
     : children;
@@ -54,7 +44,6 @@ const ViewportPane = function(props) {
       ref={drop}
       data-cy={`viewport-container-${viewportIndex}`}
     >
-      {colorPaletteComp}
       {renderedChildren}
     </div>
   );
@@ -66,23 +55,8 @@ const renderFusion = displaySet => {
       <div className="message">
         <i className="fa fa-exclamation-triangle"></i>
       </div>
-      <div className="info">
-        <span>Image fusion will be displayed here</span>
-        {displaySet.imageFusion}
-      </div>
+      <div className="info">{displaySet.imageFusion}</div>
     </div>
-  );
-};
-
-const renderColorPalette = presetArray => {
-  return (
-    <Select
-      style={{ color: 'white' }}
-      data-cy="file-type"
-      onChange={console.log}
-      options={presetArray}
-      label={'Select a color palette:'}
-    />
   );
 };
 
