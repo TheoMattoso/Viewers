@@ -6,7 +6,7 @@ import './ViewportPane.css';
 import { Select } from '@ohif/ui';
 import vtkColorMaps from '../../../../../extensions/vtk/src/ColorMaps.js';
 
-const ViewportPane = function (props) {
+const ViewportPane = function(props) {
   const { children, onDrop, viewportIndex, className: propClassName } = props;
   const { displaySet } = children.props.viewportData;
   const [{ hovered, highlighted }, drop] = useDrop({
@@ -38,6 +38,7 @@ const ViewportPane = function (props) {
     ? renderColorPalette(presetArray)
     : null;
 
+  console.log(displaySet);
   const renderedChildren = displaySet.fusion
     ? renderFusion(displaySet)
     : children;
@@ -67,6 +68,7 @@ const renderFusion = displaySet => {
       </div>
       <div className="info">
         <span>Image fusion will be displayed here</span>
+        {displaySet.imageFusion}
       </div>
     </div>
   );

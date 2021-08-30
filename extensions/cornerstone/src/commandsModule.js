@@ -1,11 +1,14 @@
+import React from 'react';
 import cornerstone from 'cornerstone-core';
 import cornerstoneTools from 'cornerstone-tools';
 import OHIF from '@ohif/core';
+import { getImageData } from 'react-vtkjs-viewport';
 
 import setCornerstoneLayout from './utils/setCornerstoneLayout.js';
 import { getEnabledElement } from './state';
 import CornerstoneViewportDownloadForm from './CornerstoneViewportDownloadForm';
 import FusionAlertContent from '../../../platform/viewer/src/components/FusionAlertDialog/FusionAlertContent.js';
+import VTKFusion from '../../vtk/src/VTKFusion.js';
 
 const scroll = cornerstoneTools.import('util/scroll');
 
@@ -30,13 +33,37 @@ const showFusionAlert = servicesManager => {
   });
 };
 
-const fusion = (viewports, enabledFusion) => {
-  Object.values(viewports.viewportSpecificData).forEach(value => {
-    value.fusion = enabledFusion;
-  });
+const fusion = (viewports, servers, enabledFusion) => {
+  let imageFusion = { CT: null, PT: null, STUDY: null },
+    enabledElements = cornerstone.getEnabledElements();
+
+  Object.values(viewports.viewportSpecificData).forEach(
+    (viewportData, index) => {
+      viewportData.fusion = enabledFusion;
+
+      if (!viewportData) return;
+      imageFusion[viewportData.Modality] = viewportData.SeriesInstanceUID;
+      imageFusion['STUDY'] = viewportData.StudyInstanceUID;
+
+      viewportData.imageFusion = <VTKFusion imageFusion={imageFusion} />;
+    }
+  );
+
+  let { viewportSpecificData } = viewports;
+  console.log('viewportSpecificData: ', viewportSpecificData);
+  console.log('------------------');
+
+  console.log('Viewports: ', viewports);
+  console.log('enabledElements: ', enabledElements);
+  console.log('enabledElements1: ', enabledElements[0]);
+  console.log('enabledElements2: ', enabledElements[1]);
+  //console.log('cornerstone image: ', cornerstone.getImage());
+  console.log('cornerstone image cache: ', cornerstone.imageCache);
+  console.log('cornerstone: ', cornerstone);
+  console.log('----------');
 };
 
-const commandsModule = ({ servicesManager }) => {
+const commandsModule = ({ servicesManager, context }) => {
   const actions = {
     rotateViewport: ({ viewports, rotation }) => {
       const enabledElement = getEnabledElement(viewports.activeViewportIndex);
@@ -311,20 +338,20 @@ const commandsModule = ({ servicesManager }) => {
         refreshCornerstoneViewports();
       }
     },
-    fusionPetCt: ({ viewports }) => {
+    fusionPetCt: ({ viewports, servers }) => {
       if (viewports.numColumns !== 2 || viewports.numRows !== 1) {
         showFusionAlert(servicesManager);
         return;
       }
-      fusion(viewports, true);
+      fusion(viewports, servers, true);
       setCornerstoneLayout();
     },
-    fusionSpectCt: ({ viewports }) => {
+    fusionSpectCt: ({ viewports, servers }) => {
       if (viewports.numColumns !== 2 || viewports.numRows !== 1) {
         showFusionAlert(servicesManager);
         return;
       }
-      fusion(viewports, true);
+      fusion(viewports, servers, true);
       setCornerstoneLayout();
     },
     cancelFusion: ({ viewports }) => {
@@ -448,7 +475,7 @@ const commandsModule = ({ servicesManager }) => {
     },
     fusionPetCt: {
       commandFn: actions.fusionPetCt,
-      storeContexts: ['viewports'],
+      storeContexts: ['viewports', 'servers', 'studies'],
       options: {},
     },
     fusionSpectCt: {
