@@ -1781,35 +1781,6 @@
     p-map "^2.1.0"
     semver "^6.2.0"
 
-"@lerna/bootstrap@3.18.0":
-  version "3.18.0"
-  resolved "https://registry.yarnpkg.com/@lerna/bootstrap/-/bootstrap-3.18.0.tgz#705d9eb51a24d549518796a09f24d24526ed975b"
-  integrity sha512-3DZKWIaKvr7sUImoKqSz6eqn84SsOVMnA5QHwgzXiQjoeZ/5cg9x2r+Xj3+3w/lvLoh0j8U2GNtrIaPNis4bKQ==
-  dependencies:
-    "@lerna/command" "3.18.0"
-    "@lerna/filter-options" "3.18.0"
-    "@lerna/has-npm-version" "3.16.5"
-    "@lerna/npm-install" "3.16.5"
-    "@lerna/package-graph" "3.18.0"
-    "@lerna/pulse-till-done" "3.13.0"
-    "@lerna/rimraf-dir" "3.16.5"
-    "@lerna/run-lifecycle" "3.16.2"
-    "@lerna/run-topologically" "3.18.0"
-    "@lerna/symlink-binary" "3.17.0"
-    "@lerna/symlink-dependencies" "3.17.0"
-    "@lerna/validation-error" "3.13.0"
-    dedent "^0.7.0"
-    get-port "^4.2.0"
-    multimatch "^3.0.0"
-    npm-package-arg "^6.1.0"
-    npmlog "^4.1.2"
-    p-finally "^1.0.0"
-    p-map "^2.1.0"
-    p-map-series "^1.0.0"
-    p-waterfall "^1.0.0"
-    read-package-tree "^5.1.6"
-    semver "^6.2.0"
-
 "@lerna/changed@3.18.3":
   version "3.18.3"
   resolved "https://registry.yarnpkg.com/@lerna/changed/-/changed-3.18.3.tgz#50529e8bd5d7fe2d0ace046a6e274d3de652a493"
@@ -11818,7 +11789,6 @@ lerna@^3.15.0:
   integrity sha512-Bnr/RjyDSVA2Vu+NArK7do4UIpyy+EShOON7tignfAekPbi7cNDnMMGgSmbCQdKITkqPACMfCMdyq0hJlg6n3g==
   dependencies:
     "@lerna/add" "3.18.0"
-    "@lerna/bootstrap" "3.18.0"
     "@lerna/changed" "3.18.3"
     "@lerna/clean" "3.18.0"
     "@lerna/cli" "3.18.0"

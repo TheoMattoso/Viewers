@@ -4,11 +4,12 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import './ViewportPane.css';
 import { Select } from '@ohif/ui';
+import OHIFImageFusion from '../OHIFImageFusion/OHIFImageFusion';
 import vtkColorMaps from '../../../../../extensions/vtk/src/ColorMaps.js';
 
 const ViewportPane = function (props) {
   const { children, onDrop, viewportIndex, className: propClassName } = props;
-  const { displaySet } = children.props.viewportData;
+  const { displaySet, studies } = children.props.viewportData;
   const [{ hovered, highlighted }, drop] = useDrop({
     accept: 'thumbnail',
     drop: (droppedItem, monitor) => {
@@ -39,7 +40,7 @@ const ViewportPane = function (props) {
     : null;
 
   const renderedChildren = displaySet.fusion
-    ? renderFusion(displaySet)
+    ? renderFusion(studies, viewportIndex)
     : children;
 
   return (
@@ -59,16 +60,17 @@ const ViewportPane = function (props) {
   );
 };
 
-const renderFusion = displaySet => {
+const renderFusion = (studies, viewportIndex) => {
   return (
-    <div className="display">
-      <div className="message">
-        <i className="fa fa-exclamation-triangle"></i>
-      </div>
-      <div className="info">
-        <span>Image fusion will be displayed here</span>
-      </div>
-    </div>
+    <OHIFImageFusion studies={studies} viewportIndex={viewportIndex} />
+    // {/* <div className="display">
+    //   <div className="message">
+    //     <i className="fa fa-exclamation-triangle"></i>
+    //   </div>
+    //   <div className="info">
+    //     <span>Image fusion will be displayed here</span>
+    //   </div>
+    // </div> */}
   );
 };
 

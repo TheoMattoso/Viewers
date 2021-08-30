@@ -6,6 +6,7 @@ import setCornerstoneLayout from './utils/setCornerstoneLayout.js';
 import { getEnabledElement } from './state';
 import CornerstoneViewportDownloadForm from './CornerstoneViewportDownloadForm';
 import FusionAlertContent from '../../../platform/viewer/src/components/FusionAlertDialog/FusionAlertContent.js';
+import React from 'react';
 
 const scroll = cornerstoneTools.import('util/scroll');
 
@@ -312,18 +313,18 @@ const commandsModule = ({ servicesManager }) => {
       }
     },
     fusionPetCt: ({ viewports }) => {
-      if (viewports.numColumns !== 2 || viewports.numRows !== 1) {
-        showFusionAlert(servicesManager);
-        return;
-      }
+      // if (viewports.numColumns !== 2 || viewports.numRows !== 1) {
+      //   showFusionAlert(servicesManager);
+      //   return;
+      // }
       fusion(viewports, true);
       setCornerstoneLayout();
     },
     fusionSpectCt: ({ viewports }) => {
-      if (viewports.numColumns !== 2 || viewports.numRows !== 1) {
-        showFusionAlert(servicesManager);
-        return;
-      }
+      // if (viewports.numColumns !== 2 || viewports.numRows !== 1) {
+      //   showFusionAlert(servicesManager);
+      //   return;
+      // }
       fusion(viewports, true);
       setCornerstoneLayout();
     },
