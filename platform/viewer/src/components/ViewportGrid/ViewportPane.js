@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDrop } from 'react-dnd';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import './ViewportPane.css';
 import { Select } from '@ohif/ui';
 import OHIFImageFusion from '../OHIFImageFusion/OHIFImageFusion';
-import vtkColorMaps from '../../../../../extensions/vtk/src/ColorMaps.js';
+import cornerstone from 'cornerstone-core';
 
-const ViewportPane = function (props) {
+const ViewportPane = props => {
   const { children, onDrop, viewportIndex, className: propClassName } = props;
   const { displaySet, studies } = children.props.viewportData;
   const [{ hovered, highlighted }, drop] = useDrop({
@@ -31,16 +31,21 @@ const ViewportPane = function (props) {
   });
 
   const presetArray = [];
-  vtkColorMaps.rgbPresetNames.map(preset => {
-    presetArray.push({ key: preset, value: preset });
-  });
+  cornerstone.colors
+    .getColormapsList()
+    .filter(preset => preset.name)
+    .forEach(preset =>
+      presetArray.push({ key: preset.name, value: preset.id })
+    );
+
+  const [selectedColorMap, setSelectedColorMap] = useState('');
 
   const colorPaletteComp = displaySet.fusion
-    ? renderColorPalette(presetArray)
+    ? renderColorPalette(presetArray, selectedColorMap, setSelectedColorMap)
     : null;
 
   const renderedChildren = displaySet.fusion
-    ? renderFusion(studies, viewportIndex)
+    ? renderFusion(studies, viewportIndex, selectedColorMap)
     : children;
 
   return (
@@ -60,9 +65,14 @@ const ViewportPane = function (props) {
   );
 };
 
-const renderFusion = (studies, viewportIndex) => {
+const renderFusion = (studies, viewportIndex, selectedColorMap) => {
+  console.log(selectedColorMap);
   return (
-    <OHIFImageFusion studies={studies} viewportIndex={viewportIndex} />
+    <OHIFImageFusion
+      studies={studies}
+      viewportIndex={viewportIndex}
+      colorMap={selectedColorMap}
+    />
     // {/* <div className="display">
     //   <div className="message">
     //     <i className="fa fa-exclamation-triangle"></i>
@@ -74,12 +84,13 @@ const renderFusion = (studies, viewportIndex) => {
   );
 };
 
-const renderColorPalette = presetArray => {
+const renderColorPalette = (presetArray, selected, selectedFunction) => {
   return (
     <Select
       style={{ color: 'white' }}
       data-cy="file-type"
-      onChange={console.log}
+      value={selected}
+      onChange={event => selectedFunction(event.target.value)}
       options={presetArray}
       label={'Select a color palette:'}
     />
