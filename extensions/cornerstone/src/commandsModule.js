@@ -37,6 +37,25 @@ const fusion = (viewports, enabledFusion) => {
   });
 };
 
+const isFusionValid = viewports => {
+  let { numColumns, numRows, viewportSpecificData } = viewports;
+  let [VSData_0, VSData_1] = Object.values(viewportSpecificData);
+  let isSameModality = VSData_0['Modality'] == VSData_1['Modality'];
+
+  if (numColumns !== 2 || numRows !== 1 || isSameModality) return false;
+
+  let data_0 = {
+    SUID: VSData_0['StudyInstanceUID'],
+    SN: VSData_0['SeriesNumber'],
+  };
+  let data_1 = {
+    SUID: VSData_1['StudyInstanceUID'],
+    SN: VSData_1['SeriesNumber'],
+  };
+
+  return JSON.stringify(data_0) == JSON.stringify(data_1);
+};
+
 const commandsModule = ({ servicesManager }) => {
   const actions = {
     rotateViewport: ({ viewports, rotation }) => {
@@ -313,18 +332,22 @@ const commandsModule = ({ servicesManager }) => {
       }
     },
     fusionPetCt: ({ viewports }) => {
-      // if (viewports.numColumns !== 2 || viewports.numRows !== 1) {
-      //   showFusionAlert(servicesManager);
-      //   return;
-      // }
+      let fusionValid = isFusionValid(viewports);
+      if (!fusionValid) {
+        showFusionAlert(servicesManager);
+        return;
+      }
+
       fusion(viewports, true);
       setCornerstoneLayout();
     },
     fusionSpectCt: ({ viewports }) => {
-      // if (viewports.numColumns !== 2 || viewports.numRows !== 1) {
-      //   showFusionAlert(servicesManager);
-      //   return;
-      // }
+      let fusionValid = isFusionValid(viewports);
+      if (!fusionValid) {
+        showFusionAlert(servicesManager);
+        return;
+      }
+
       fusion(viewports, true);
       setCornerstoneLayout();
     },
