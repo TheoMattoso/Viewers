@@ -7,16 +7,17 @@ const { setLayout } = redux.actions;
  *
  * @return void
  */
-const setCornerstoneLayout = () => {
+const setCornerstoneLayout = (numRows = 1, numColumns = 1) => {
+  let viewports = Array(numRows * numColumns).fill({ plugin: 'cornerstone' });
   const layout = {
-    numRows: 1,
-    numColumns: 1,
-    viewports: [{ plugin: 'cornerstone' }],
+    numRows,
+    numColumns,
+    viewports,
   };
 
   const action = setLayout(layout);
 
   window.store.dispatch(action);
-}
+};
 
 export default setCornerstoneLayout;

@@ -337,9 +337,10 @@ const commandsModule = ({ servicesManager }) => {
         showFusionAlert(servicesManager);
         return;
       }
-
       fusion(viewports, true);
-      setCornerstoneLayout();
+
+      let { numRows, numColumns } = viewports;
+      setCornerstoneLayout(numRows, numColumns + 1);
     },
     fusionSpectCt: ({ viewports }) => {
       let fusionValid = isFusionValid(viewports);
@@ -347,9 +348,10 @@ const commandsModule = ({ servicesManager }) => {
         showFusionAlert(servicesManager);
         return;
       }
-
       fusion(viewports, true);
-      setCornerstoneLayout();
+
+      let { numRows, numColumns } = viewports;
+      setCornerstoneLayout(numRows, numColumns + 1);
     },
     cancelFusion: ({ viewports }) => {
       fusion(viewports, false);

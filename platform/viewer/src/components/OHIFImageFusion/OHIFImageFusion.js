@@ -9,6 +9,7 @@ export default class OHIFImageFusion extends React.Component {
   componentDidUpdate() {
     const element = document.querySelector('#element');
     const layer = cornerstone.getActiveLayer(element);
+    if (!layer) return;
     layer.viewport.colormap = this.props.colorMap;
     cornerstone.updateImage(element);
   }
