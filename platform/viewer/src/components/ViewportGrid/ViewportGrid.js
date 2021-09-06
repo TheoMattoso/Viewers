@@ -28,7 +28,8 @@ const ViewportGrid = function(props) {
     isFusionEnabled,
   } = props;
 
-  const rowSize = 100 / numRows;
+  const nRows = !isFusionEnabled ? numRows : numRows + 1;
+  const rowSize = 100 / nRows;
   const colSize = 100 / numColumns;
 
   // http://grid.malven.co/
@@ -119,27 +120,27 @@ const ViewportGrid = function(props) {
           display: 'grid',
           gridTemplateRows: `repeat(${numRows}, ${rowSize}%)`,
           gridTemplateColumns: `repeat(${numColumns}, ${colSize}%)`,
-          height: !isFusionEnabled ? '100%' : '50%',
+          height: '100%',
           width: '100%',
         }}
       >
         {ViewportPanes}
-      </div>
-      {isFusionEnabled ? (
-        <div style={{ height: '50%', width: '100%' }}>
-          <div
-            style={{
-              alignItems: 'center',
-              color: 'white',
-              display: 'flex',
-              height: '100%',
-              justifyContent: 'center',
-            }}
-          >
-            FUSION will be displayed here
+        {isFusionEnabled ? (
+          <div style={{ gridColumn: 'span 2', height: '100%' }}>
+            <div
+              style={{
+                alignItems: 'center',
+                color: 'white',
+                display: 'flex',
+                height: '100%',
+                justifyContent: 'center',
+              }}
+            >
+              FUSION will be displayed here
+            </div>
           </div>
-        </div>
-      ) : null}
+        ) : null}
+      </div>
     </>
   );
 };
