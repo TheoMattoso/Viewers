@@ -25,6 +25,7 @@ const ViewportGrid = function(props) {
     viewportData,
     children,
     isStudyLoaded,
+    isFusionEnabled,
   } = props;
 
   const rowSize = 100 / numRows;
@@ -44,7 +45,7 @@ const ViewportGrid = function(props) {
         loadAndCacheDerivedDisplaySets(displaySet, studies, logger, snackbar);
       });
     }
-  }, [studies, viewportData, isStudyLoaded, snackbar]);
+  }, [studies, viewportData, isStudyLoaded, snackbar, logger]);
 
   const getViewportPanes = () =>
     layout.viewports.map((layout, viewportIndex) => {
@@ -111,18 +112,35 @@ const ViewportGrid = function(props) {
   ]);
 
   return (
-    <div
-      data-cy="viewprt-grid"
-      style={{
-        display: 'grid',
-        gridTemplateRows: `repeat(${numRows}, ${rowSize}%)`,
-        gridTemplateColumns: `repeat(${numColumns}, ${colSize}%)`,
-        height: '100%',
-        width: '100%',
-      }}
-    >
-      {ViewportPanes}
-    </div>
+    <>
+      <div
+        data-cy="viewprt-grid"
+        style={{
+          display: 'grid',
+          gridTemplateRows: `repeat(${numRows}, ${rowSize}%)`,
+          gridTemplateColumns: `repeat(${numColumns}, ${colSize}%)`,
+          height: !isFusionEnabled ? '100%' : '50%',
+          width: '100%',
+        }}
+      >
+        {ViewportPanes}
+      </div>
+      {isFusionEnabled ? (
+        <div style={{ height: '50%', width: '100%' }}>
+          <div
+            style={{
+              alignItems: 'center',
+              color: 'white',
+              display: 'flex',
+              height: '100%',
+              justifyContent: 'center',
+            }}
+          >
+            FUSION will be displayed here
+          </div>
+        </div>
+      ) : null}
+    </>
   );
 };
 
@@ -138,12 +156,14 @@ ViewportGrid.propTypes = {
   defaultPlugin: PropTypes.string,
   numRows: PropTypes.number.isRequired,
   numColumns: PropTypes.number.isRequired,
+  isFusionEnabled: PropTypes.bool,
 };
 
 ViewportGrid.defaultProps = {
   viewportData: [],
   numRows: 1,
   numColumns: 1,
+  isFusionEnabled: false,
   layout: {
     viewports: [{}],
   },

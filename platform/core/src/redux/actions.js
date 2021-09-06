@@ -42,11 +42,17 @@ export const setViewportActive = viewportIndex => ({
 /**
  * @param {ViewportLayout} layout
  */
-export const setLayout = ({ numRows, numColumns, viewports }) => ({
+export const setLayout = ({
+  numRows,
+  numColumns,
+  viewports,
+  isFusionEnabled,
+}) => ({
   type: SET_VIEWPORT_LAYOUT,
   numRows,
   numColumns,
   viewports,
+  isFusionEnabled,
 });
 
 /**

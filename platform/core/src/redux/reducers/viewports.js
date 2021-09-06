@@ -16,6 +16,7 @@ setAutoFreeze(false);
 export const DEFAULT_STATE = {
   numRows: 1,
   numColumns: 1,
+  isFusionEnabled: false,
   activeViewportIndex: 0,
   layout: {
     viewports: [{}],
@@ -126,6 +127,7 @@ const viewports = (state = DEFAULT_STATE, action) => {
         ...state,
         numRows: action.numRows,
         numColumns: action.numColumns,
+        isFusionEnabled: action.isFusionEnabled,
         layout: { viewports: [...action.viewports] },
         viewportSpecificData,
         activeViewportIndex,

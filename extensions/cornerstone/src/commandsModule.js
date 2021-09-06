@@ -340,7 +340,7 @@ const commandsModule = ({ servicesManager }) => {
       fusion(viewports, true);
 
       let { numRows, numColumns } = viewports;
-      setCornerstoneLayout(numRows, numColumns + 1);
+      setCornerstoneLayout(numRows, numColumns, true);
     },
     fusionSpectCt: ({ viewports }) => {
       let fusionValid = isFusionValid(viewports);
@@ -351,7 +351,7 @@ const commandsModule = ({ servicesManager }) => {
       fusion(viewports, true);
 
       let { numRows, numColumns } = viewports;
-      setCornerstoneLayout(numRows, numColumns + 1);
+      setCornerstoneLayout(numRows, numColumns, true);
     },
     cancelFusion: ({ viewports }) => {
       fusion(viewports, false);
